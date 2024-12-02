@@ -16,9 +16,8 @@ export default defineConfig({
     name:'Ext Demo',
     icons:{
       16: '/icons/icon16.jpg',
-      24: '/icons/icon24.jpg',
       48: '/icons/icon48.jpg',
-      96: '/icons/icon96.jpg',
+      64: '/icons/icon64.jpg',
       128: '/icons/icon128.jpg',
     },
     permissions:['storage','tabs']
