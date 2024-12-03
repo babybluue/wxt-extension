@@ -1,5 +1,5 @@
 <template>
-  <div class="w-[500px] h-[400px]">
+  <div>
     <button
       class="w-[80px] p-[5px] rounded-md bg-white mr-5"
       @click="handleStart"
@@ -95,7 +95,7 @@
     const postList = sortPost()
     for (let i = 0; i < postList.length; i++) {
       const post = postList[i]
-      flag = post.dataset.index
+      flag = post.dataset.index as string
       await deletePost(post)
     }
     position++
@@ -119,6 +119,8 @@
   }
 
   const handleStop = () => {
+    console.log('ddd')
+
     location.reload()
   }
 </script>
