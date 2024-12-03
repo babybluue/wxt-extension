@@ -13,7 +13,7 @@ export default defineContentScript({
     console.log('init')
     const ui = await createShadowRootUi(ctx, {
       name: 'weibo-content-script',
-      position: 'modal',
+      position: 'overlay',
       anchor: '#app',
       onMount: (container) => {
         const app = createApp(App)

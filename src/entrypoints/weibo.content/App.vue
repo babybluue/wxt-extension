@@ -1,10 +1,12 @@
 <template>
   <div class="w-[500px] h-[400px]">
-    <div>来自微博页面</div>
-    <button class="w-[100px] p-[10px] rounded-md" @click="handleStart">
+    <button
+      class="w-[80px] p-[5px] rounded-md bg-white mr-5"
+      @click="handleStart"
+    >
       开始删除
     </button>
-    <button class="w-[100px] p-[10px] rounded-md" @click="handleStop">
+    <button class="w-[80px] p-[5px] rounded-md bg-white" @click="handleStop">
       停止删除
     </button>
   </div>
