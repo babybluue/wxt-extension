@@ -14,8 +14,6 @@
 <script lang="ts" setup>
   import { computed, reactive, ref, watch } from 'vue'
 
-  console.log('init')
-
   const _wrapper = '.vue-recycle-scroller__item-wrapper'
   const _post = '.wbpro-scroller-item'
   const _more = '.woo-pop-ctrl i'
@@ -26,18 +24,18 @@
   const _friend = '.title_wrap_3e__u'
   const _left = '.woo-panel-left'
 
-  let flag = 0
+  let flag: number | string = 0
   let position = 1
   let interval = null
   let isBottom = false
 
   const sortPost = () => {
     const wrapper = document.querySelector(_wrapper)
-    const allPost = wrapper.querySelectorAll(_post)
+    const allPost = wrapper?.querySelectorAll(_post) as NodeListOf<HTMLElement>
     const allPostIndex = Array.from(allPost)
       .map((item) => item.dataset.index)
       .sort()
-    const result = []
+    const result: HTMLElement[] = []
     allPostIndex.map((index) => {
       allPost.forEach((item) => {
         if (item.dataset.index == index) {
@@ -48,21 +46,21 @@
     return result
   }
 
-  const deletePost = async (post) => {
+  const deletePost = async (post: HTMLElement) => {
     const isFriend = post.querySelector(_friend)
     if (isFriend) {
       return
     }
 
     // 更多按钮
-    const more = post.querySelector(_more)
+    const more = post.querySelector(_more) as HTMLElement
     if (!more) return
     more.click()
     await sleep(500)
 
     // 删除按钮
     const pop = document.querySelectorAll(`${_pop} ${_pop_item}`)
-    const deleteBtn = pop[pop.length - 1]
+    const deleteBtn = pop[pop.length - 1] as HTMLElement
     if (!deleteBtn) return
     deleteBtn.click()
     await sleep(500)
@@ -70,13 +68,13 @@
     // 确认按钮
     const confirmBtn = document.querySelector(
       `${_modal_wrap} ${_confirm_button}`
-    )
+    ) as HTMLElement
     if (!confirmBtn) return
     confirmBtn.click()
     await sleep(500)
   }
 
-  const sleep = (time) => {
+  const sleep = (time: number) => {
     return new Promise((resolve) => setTimeout(resolve, time))
   }
 
@@ -89,7 +87,7 @@
   const getPost = async () => {
     if (
       window.scrollY + window.innerHeight >=
-      document.querySelector('#app').clientHeight - 5
+      document.querySelector('#app')!.clientHeight - 5
     ) {
       window.removeEventListener('scroll', scrollEvent)
       return
@@ -121,6 +119,6 @@
   }
 
   const handleStop = () => {
-    //
+    location.reload()
   }
 </script>
