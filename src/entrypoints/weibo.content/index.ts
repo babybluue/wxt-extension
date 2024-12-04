@@ -1,7 +1,9 @@
 import './style.less'
+import '@/assets/tailwind.css'
 import { createApp } from 'vue'
 import App from './App.vue'
-import '@/assets/tailwind.css'
+import Antd from 'ant-design-vue'
+import 'ant-design-vue/dist/antd.less'
 
 export default defineContentScript({
   matches: ['https://weibo.com/u/*'],
@@ -17,7 +19,7 @@ export default defineContentScript({
       anchor: '#app',
       onMount: (container) => {
         const app = createApp(App)
-        app.mount(container)
+        app.use(Antd).mount(container)
         return app
       },
       onRemove: (app) => app?.unmount(),

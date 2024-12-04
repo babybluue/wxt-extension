@@ -1,14 +1,7 @@
 <template>
   <div>
-    <button
-      class="w-[80px] p-[5px] rounded-md bg-white mr-5"
-      @click="handleStart"
-    >
-      开始删除
-    </button>
-    <button class="w-[80px] p-[5px] rounded-md bg-white" @click="handleStop">
-      停止删除
-    </button>
+    <a-button type="primary" @click="handleStart">开始删除</a-button>
+    <a-button @click="handleStop">停止删除</a-button>
   </div>
 </template>
 <script lang="ts" setup>
