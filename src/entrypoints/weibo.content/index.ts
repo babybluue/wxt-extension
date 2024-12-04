@@ -22,7 +22,14 @@ export default defineContentScript({
       },
       onRemove: (app) => app?.unmount(),
     })
-
-    ui.mount()
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      if (request.message === 'show') {
+        ui.remove()
+        ui.mount()
+      }
+      if (request.message === 'hide') {
+        ui.remove()
+      }
+    })
   },
 })
