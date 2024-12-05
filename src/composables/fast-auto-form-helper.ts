@@ -1,3 +1,5 @@
+import dayjs from 'dayjs'
+
 export const fastAutoFormHelper = () => {
   const readClientInfoForm = () => {
     const formArea = document.querySelector('.ant-form div')
@@ -20,15 +22,37 @@ export const fastAutoFormHelper = () => {
     const allForms = formArea?.querySelectorAll('.flex.flex-col.items-start')
     allForms?.forEach((form) => {
       const label = form.querySelector('div:first-child')?.textContent
-      const antFormItem = form.querySelector('.ant-form-item')
-      antFormItem?.classList.add(
-        'ant-form-item-has-feedback',
-        'ant-form-item-has-success'
-      )
       const input = form.querySelector('input')
       if (label && input) {
-        input.value = formData[label] ?? ''
-        input.dispatchEvent(new Event('input'))
+        if (label === 'DOB') {
+          // input.value = dayjs(formData[label]).toString()
+          // input.dispatchEvent(new Event('input'))
+          // console.log(formData[label], dayjs(formData[label]).toString())
+          // input.dispatchEvent(new Event('input', { bubbles: true }))
+          // input.readOnly = false
+          input.focus()
+          input.value = formData[label] ?? '2050/02/02'
+          input.dispatchEvent(
+            new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
+          )
+          // input.dispatchEvent(
+          //   new KeyboardEvent('keydown', {
+          //     key: 'Enter',
+          //     code: 'Enter',
+          //     bubbles: true,
+          //   })
+          // )
+        }
+        if (label === 'Gender') {
+          input.dispatchEvent(new Event('input'))
+          input.value = formData[label] ?? ''
+          input.dispatchEvent(
+            new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
+          )
+        } else {
+          // input.value = formData[label] ?? ''
+          // input.dispatchEvent(new Event('input', { bubbles: true }))
+        }
       }
     })
   }

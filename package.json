@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "ant-design-vue": "3.2.20",
+    "dayjs": "^1.11.13",
     "vue": "^3.5.12"
   },
   "devDependencies": {

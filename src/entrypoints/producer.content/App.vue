@@ -54,6 +54,7 @@
     })
     title.parentNode?.insertBefore(button, title.nextSibling)
   }
+
   const handleChange = () => {
     const title = document.querySelector(_modalName)
     if (title && title.textContent === 'Verge Quick Personal Auto Quote') {
