@@ -77,18 +77,6 @@
         subtree: true,
       })
     }
-
-    // nextTick().then(() => {
-    //   console.log(document.querySelector(_createBtn))
-    // })
-    // console.log(document.querySelector(_createBtn))
-
-    // document.querySelector(_createBtn)?.addEventListener('click', () => {
-    //   console.log('You clicked the create button')
-    //   document.querySelector(_personalAuto)?.addEventListener('click', () => {
-    //     console.log('You chosen the personal auto option')
-    //   })
-    // })
   })
 
   onBeforeUnmount(() => {
