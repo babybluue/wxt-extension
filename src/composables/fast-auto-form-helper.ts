@@ -1,6 +1,12 @@
-import dayjs from 'dayjs'
+import userEvent from '@testing-library/user-event'
+import { confirmEnter } from './human-like-helper'
 
 export const fastAutoFormHelper = () => {
+  const datePicker = ['DOB']
+  const select = ['Gender']
+
+  const user = userEvent.setup()
+
   const readClientInfoForm = () => {
     const formArea = document.querySelector('.ant-form div')
     const allForms = formArea?.querySelectorAll('.flex.flex-col.items-start')
@@ -8,53 +14,42 @@ export const fastAutoFormHelper = () => {
     allForms?.forEach((form) => {
       const label = form.querySelector('div:first-child')?.textContent
       const value = form.querySelector('input')?.value
-      if (label) {
-        formData[label] = value ?? ''
+      if (!label) return
+      if (select.includes(label)) {
+        const selected = form.querySelector(
+          '.ant-select-selection-item'
+        ) as HTMLElement
+        formData[label] = selected?.title || ''
+        return
       }
+      formData[label] = value ?? ''
     })
 
     localStorage.setItem('clientInfo', JSON.stringify(formData))
   }
 
-  const fillClientInfoForm = () => {
+  const fillClientInfoForm = async () => {
     const formData = JSON.parse(localStorage.getItem('clientInfo') ?? '{}')
     const formArea = document.querySelector('.ant-form div')
     const allForms = formArea?.querySelectorAll('.flex.flex-col.items-start')
-    allForms?.forEach((form) => {
+    if (!allForms) return
+    for (const form of allForms) {
       const label = form.querySelector('div:first-child')?.textContent
       const input = form.querySelector('input')
       if (label && input) {
-        if (label === 'DOB') {
-          // input.value = dayjs(formData[label]).toString()
-          // input.dispatchEvent(new Event('input'))
-          // console.log(formData[label], dayjs(formData[label]).toString())
-          // input.dispatchEvent(new Event('input', { bubbles: true }))
-          // input.readOnly = false
-          input.focus()
-          input.value = formData[label] ?? '2050/02/02'
-          input.dispatchEvent(
-            new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
-          )
-          // input.dispatchEvent(
-          //   new KeyboardEvent('keydown', {
-          //     key: 'Enter',
-          //     code: 'Enter',
-          //     bubbles: true,
-          //   })
-          // )
+        if (datePicker.includes(label)) {
+          await user.type(input, formData[label])
+          confirmEnter(input)
+          continue
         }
-        if (label === 'Gender') {
-          input.dispatchEvent(new Event('input'))
-          input.value = formData[label] ?? ''
-          input.dispatchEvent(
-            new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
-          )
-        } else {
-          // input.value = formData[label] ?? ''
-          // input.dispatchEvent(new Event('input', { bubbles: true }))
+        if (select.includes(label)) {
+          await user.click(input)
+          clickOption(formData[label])
+          continue
         }
+        await user.type(input, formData[label])
       }
-    })
+    }
   }
 
   return {
