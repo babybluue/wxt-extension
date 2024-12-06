@@ -38,6 +38,8 @@ export const fastAutoFormHelper = () => {
       const input = form.querySelector('input')
       if (label && input) {
         if (datePicker.includes(label)) {
+          input.readOnly = false
+          await user.clear(input)
           await user.type(input, formData[label])
           confirmEnter(input)
           continue
@@ -47,6 +49,7 @@ export const fastAutoFormHelper = () => {
           clickOption(formData[label])
           continue
         }
+        await user.clear(input)
         await user.type(input, formData[label])
       }
     }
