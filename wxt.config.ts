@@ -14,6 +14,7 @@ export default defineConfig({
     disabled: true,
   },
   modules: ['@wxt-dev/module-vue'],
+
   vite: () => ({
     css: {
       preprocessorOptions: {
