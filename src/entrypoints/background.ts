@@ -26,4 +26,11 @@ export default defineBackground(() => {
       chrome.tabs.sendMessage(tabId, { message: 'hide' })
     }
   })
+
+  chrome.webRequest.onCompleted.addListener(
+    (detail) => {
+      console.log(detail)
+    },
+    { urls: ['https://quoting.foragentsonly.com/*'] }
+  )
 })

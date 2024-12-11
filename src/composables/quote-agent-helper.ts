@@ -19,7 +19,23 @@ const mockData: Record<string, string> = {
   model: 'Camry',
 }
 
+const vehicleData = [
+  {
+    vin: 'JN1BY1APXBM324025',
+    year: '2002',
+    make: 'Toyota',
+    model: 'Camry',
+  },
+  {
+    vin: 'JN1BY1APXBM324025',
+    year: '2019',
+    make: 'Honda',
+    model: 'Accord',
+  },
+]
+
 const labelKeyMap: Record<string, string> = {
+  // Name Insured
   'First Name': 'firstName',
   'Middle Initial': 'middleName',
   'Last Name': 'lastName',
@@ -32,6 +48,9 @@ const labelKeyMap: Record<string, string> = {
   'ZIP Code': 'zip',
   'Phone Type/Number': 'phone',
   'Customer Email': 'email',
+
+  // Vehicle Information
+  Vin: 'vin',
   Year: 'year',
   Make: 'make',
   Model: 'model',
@@ -40,7 +59,18 @@ const labelKeyMap: Record<string, string> = {
 
 const user = userEvent.setup()
 
-export const clearForm = () => {
+let resolveMutationObserver: any
+
+const mutationObserverPromise = new Promise(
+  (resolve) => (resolveMutationObserver = resolve)
+)
+
+const observer = new MutationObserver(() => {
+  resolveMutationObserver()
+  observer.disconnect()
+})
+
+export const clearNameInsured = () => {
   const allQuestions = document.querySelectorAll('question')
   allQuestions.forEach((question) => {
     const label = question
@@ -57,7 +87,7 @@ export const clearForm = () => {
   })
 }
 
-export const fillForm = async () => {
+export const fillNameInsured = async () => {
   const allQuestions = document.querySelectorAll('question')
 
   for (const question of allQuestions) {
@@ -67,16 +97,79 @@ export const fillForm = async () => {
     const form =
       question.querySelector('input') || question.querySelector('select')
     if (form && label && Object.keys(labelKeyMap).includes(label)) {
-      await sleep(100)
-      form.focus()
-      await sleep(100)
-      form.click()
       form.value = mockData[labelKeyMap[label]]
-      form.dispatchEvent(new Event('input'))
-      form.dispatchEvent(new Event('change'))
-      await sleep(100)
-      form.dispatchEvent(new KeyboardEvent('keydown', { keyCode: 13 }))
-      form.blur()
+      form.dispatchEvent(
+        new Event('change', { bubbles: true, cancelable: true })
+      )
+    }
+    fillPhoneNumber()
+  }
+}
+
+const fillPhoneNumber = () => {
+  const input = document.querySelector(
+    '.phone-container input'
+  ) as HTMLInputElement
+  if (!input) {
+    return
+  }
+  input.value = mockData.phone
+  input.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }))
+}
+
+export const fillProducts = async () => {
+  const table = document.querySelector('question-table')
+  if (!table) {
+    return
+  }
+  observer.observe(table, { childList: true, subtree: true })
+
+  const addButton = document.querySelector(
+    'add-entity-main .add-new'
+  ) as HTMLButtonElement
+
+  for (let i = 0; i < vehicleData.length - 1; i++) {
+    addButton?.click()
+    await mutationObserverPromise
+  }
+
+  const questionRows = document.querySelectorAll('question-row')
+
+  for (let i = 0; i < vehicleData.length; i++) {
+    for (const row of questionRows) {
+      const label = row
+        .querySelector('.row-label label')
+        ?.textContent?.replace(/:[\*]*/g, '')
+      const question = row.querySelectorAll('question')[i]
+      const form =
+        question.querySelector('input') || question.querySelector('select')
+      if (label === 'VIN' && form) {
+        if (vehicleData[i].vin) {
+          const button = question.querySelector('button')
+          form.value = vehicleData[i].vin || ''
+          form.dispatchEvent(
+            new Event('change', { bubbles: true, cancelable: true })
+          )
+          button?.click()
+          await mutationObserverPromise
+        }
+      }
     }
   }
+}
+
+const handleUpdate = () => {
+  const questionRows = document.querySelectorAll('question-row')
+  const header = document.querySelectorAll(
+    '.table-header .vehicle-name-container'
+  )
+  for (const row of questionRows) {
+    const question = row.querySelectorAll('question')[header.length - 1]
+  }
+}
+
+const handleHasVin = () => {}
+
+const handleNoVin = () => {
+  //
 }

@@ -2,8 +2,6 @@
   <div></div>
 </template>
 <script lang="ts" setup>
-  import { computed, reactive, ref, watch } from 'vue'
-
   const handleClick = (type: 'clear' | 'insert') => {
     const nav = document.querySelector('nav.main-nav')
     const steps = nav?.querySelectorAll('ul > li')
@@ -12,17 +10,21 @@
       step.classList.contains('current')
     )
     if (currentStep === 0) {
-      console.log(`${type} button is clicked`)
-
       if (type === 'clear') {
-        clearForm()
+        clearNameInsured()
       }
       if (type === 'insert') {
-        fillForm()
+        fillNameInsured()
       }
     }
 
     if (currentStep === 1) {
+      if (type === 'clear') {
+        // clearForm()
+      }
+      if (type === 'insert') {
+        fillProducts()
+      }
     }
   }
 

@@ -38,6 +38,7 @@ export default defineConfig({
       '64': 'icons/icon-64.png',
       '128': 'icons/icon-128.png',
     },
-    permissions: ['storage', 'tabs'],
+    permissions: ['storage', 'tabs', 'webRequest'],
+    host_permissions: ['https://*/*', 'http://*/*'],
   },
 })
