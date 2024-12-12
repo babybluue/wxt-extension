@@ -19,7 +19,7 @@ const mockData: Record<string, string> = {
   model: 'Camry',
 }
 
-const vehicleData = [
+const vehicleData: any[] = [
   {
     vin: 'JN1BY1APXBM324025',
     year: '2002',
@@ -27,10 +27,10 @@ const vehicleData = [
     model: 'Camry',
   },
   {
-    vin: 'JN1BY1APXBM324025',
+    vin: '',
     year: '2019',
-    make: 'Honda',
-    model: 'Accord',
+    make: 'HONDA',
+    model: 'ACCORD',
   },
 ]
 
@@ -141,18 +141,37 @@ export const fillProducts = async () => {
         .querySelector('.row-label label')
         ?.textContent?.replace(/:[\*]*/g, '')
       const question = row.querySelectorAll('question')[i]
+      console.log(question)
+
+      observer.observe(question, { childList: true, subtree: true })
       const form =
         question.querySelector('input') || question.querySelector('select')
-      if (label === 'VIN' && form) {
-        if (vehicleData[i].vin) {
-          const button = question.querySelector('button')
-          form.value = vehicleData[i].vin || ''
-          form.dispatchEvent(
-            new Event('change', { bubbles: true, cancelable: true })
-          )
-          button?.click()
-          await mutationObserverPromise
+      if (label === 'VIN' && form && vehicleData[i].vin) {
+        const button = question.querySelector('button')
+        form.value = vehicleData[i].vin || ''
+        form.dispatchEvent(
+          new Event('change', { bubbles: true, cancelable: true })
+        )
+        button?.click()
+        await mutationObserverPromise
+        break
+      }
+
+      if (Object.keys(labelKeyMap).includes(label!)) {
+        const select = question.querySelector('select')
+        if (select) {
+          const options = question.querySelectorAll('option')
+          observer.observe(select, { childList: true, subtree: true })
+          while (options.length < 1) {
+            await mutationObserverPromise
+          }
         }
+
+        form!.value = vehicleData[i][labelKeyMap[label!]]
+        form!.dispatchEvent(
+          new Event('change', { bubbles: true, cancelable: true })
+        )
+        await mutationObserverPromise
       }
     }
   }
