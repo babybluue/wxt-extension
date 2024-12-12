@@ -176,19 +176,3 @@ export const fillProducts = async () => {
     }
   }
 }
-
-const handleUpdate = () => {
-  const questionRows = document.querySelectorAll('question-row')
-  const header = document.querySelectorAll(
-    '.table-header .vehicle-name-container'
-  )
-  for (const row of questionRows) {
-    const question = row.querySelectorAll('question')[header.length - 1]
-  }
-}
-
-const handleHasVin = () => {}
-
-const handleNoVin = () => {
-  //
-}

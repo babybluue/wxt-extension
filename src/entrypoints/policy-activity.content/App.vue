@@ -50,7 +50,7 @@
       .forEach((div, index) => {
         peopleInfo.push({})
         const button = div.querySelector(
-          '.internalInfo button'
+          '.internalInfo button[icon="chevron-down"]'
         ) as HTMLButtonElement
         button?.click()
         const dls = div.querySelectorAll('dl')
@@ -66,7 +66,7 @@
       .forEach((div, index) => {
         vehicleInfo.push({})
         const button = div.querySelector(
-          '.internalInfo button'
+          '.internalInfo button[icon="chevron-down"]'
         ) as HTMLButtonElement
         button?.click()
         const dls = div.querySelectorAll('dl')
